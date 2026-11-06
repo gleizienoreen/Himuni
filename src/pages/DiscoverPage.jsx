@@ -2,6 +2,7 @@ import React from 'react';
 import { MainLayout } from '../layouts/MainLayout';
 import { HeroSection } from '../components/sections/HeroSection';
 import { MoodSelectionSection } from '../components/sections/MoodSelectionSection';
+import { MoodDiscoverySection } from '../components/sections/MoodDiscoverySection';
 import { MoodSpectrumSection } from '../components/sections/MoodSpectrumSection';
 import { EnergyPersonalization } from '../components/spectrum/EnergyPersonalization';
 import { SoundscapesSection } from '../components/sections/SoundscapesSection';
@@ -22,6 +23,7 @@ export function DiscoverPage() {
     <MainLayout activeMood={selectedMood}>
       <HeroSection activeMood={selectedMood} energy={energy} />
       <MoodSelectionSection />
+      <MoodDiscoverySection />
 
       <MoodSpectrumSection>
         <EnergyPersonalization

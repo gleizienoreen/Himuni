@@ -1,6 +1,6 @@
 import React from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { Compass, RotateCcw } from 'lucide-react';
+import { Compass, Disc3, RotateCcw } from 'lucide-react';
 import { describeSpectrumPosition, getEnergyBand } from '../../utils/spectrum';
 import { scrollToSection } from '../../utils/navigation';
 import { MoodArtwork } from './MoodArtwork';
@@ -98,11 +98,20 @@ export function MoodSummary({
             <div className="flex flex-wrap items-center gap-3">
               <button
                 type="button"
-                onClick={() => scrollToSection('mood-spectrum')}
+                onClick={() => scrollToSection('mood-recommendations')}
                 className="inline-flex items-center gap-2 bg-ink text-cream px-5 py-3 text-xs sm:text-sm font-medium tracking-wide hover:bg-ink-soft transition-colors"
               >
+                <Disc3 className="w-4 h-4" aria-hidden="true" />
+                <span>Explore {mood.name.toLowerCase()} tracks</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => scrollToSection('mood-spectrum')}
+                className="inline-flex items-center gap-2 border border-ink/30 bg-cream px-4 py-3 text-xs sm:text-sm font-medium text-ink hover:border-ink transition-colors"
+              >
                 <Compass className="w-4 h-4" aria-hidden="true" />
-                <span>Refine on Mood Spectrum</span>
+                <span>Mood Spectrum</span>
               </button>
 
               {isCustomCoordinates && (
