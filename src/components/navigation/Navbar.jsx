@@ -5,7 +5,7 @@ import { Menu, X, ArrowUpRight } from 'lucide-react';
 import { HimuniLogo } from '../branding/HimuniLogo';
 import { NAV_ITEMS, scrollToSection } from '../../utils/navigation';
 
-export function Navbar({ activeMood = null }) {
+export function Navbar({ activeMood = null, headerAudioControl = null }) {
   const location = useLocation();
   const navigate = useNavigate();
   const shouldReduceMotion = useReducedMotion();
@@ -16,17 +16,34 @@ export function Navbar({ activeMood = null }) {
 
   const accentColor = activeMood?.accent || '#8067E8';
 
-  // Synchronize route pathname changes with smooth section scroll
+  const isStandaloneSubpage =
+    location.pathname === '/search' || location.pathname.startsWith('/soundscapes/');
+
+  // Synchronize route pathname changes with active state and smooth section scroll
   useEffect(() => {
+    if (location.pathname === '/search') {
+      setActiveNavId('search');
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return undefined;
+    }
+
+    if (location.pathname.startsWith('/soundscapes/')) {
+      setActiveNavId('soundscapes');
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return undefined;
+    }
+
     const matched = NAV_ITEMS.find((item) => item.path === location.pathname);
     if (matched) {
       setActiveNavId(matched.id);
       if (matched.id !== 'discover') {
-        requestAnimationFrame(() => {
+        const timer = setTimeout(() => {
           scrollToSection(matched.sectionId);
-        });
+        }, 60);
+        return () => clearTimeout(timer);
       }
     }
+    return undefined;
   }, [location.pathname]);
 
   // Track subtle header border elevation on scroll
@@ -39,11 +56,13 @@ export function Navbar({ activeMood = null }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Observe major editorial sections to keep active navigation state accurate during scroll
+  // Observe major editorial sections on Discover to keep active navigation state accurate
   useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') return undefined;
+    if (isStandaloneSubpage || typeof IntersectionObserver === 'undefined') {
+      return undefined;
+    }
 
-    const sectionIds = ['discover', 'mood-spectrum', 'about'];
+    const sectionIds = ['discover', 'mood-spectrum', 'soundscapes', 'search', 'about'];
     const elements = sectionIds
       .map((id) => document.getElementById(id))
       .filter(Boolean);
@@ -68,7 +87,7 @@ export function Navbar({ activeMood = null }) {
 
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [isStandaloneSubpage, location.pathname]);
 
   // Close mobile menu on Escape or desktop resize
   useEffect(() => {
@@ -96,23 +115,35 @@ export function Navbar({ activeMood = null }) {
     setActiveNavId(item.id);
     setMobileMenuOpen(false);
 
+    if (item.standaloneRoute) {
+      if (location.pathname !== item.path) {
+        navigate(item.path);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    const comingFromSubpage = isStandaloneSubpage;
     if (location.pathname !== item.path) {
       navigate(item.path, { replace: false });
     }
 
-    requestAnimationFrame(() => {
-      if (item.id === 'discover') {
-        const prefersReduced =
-          window.matchMedia &&
-          window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        window.scrollTo({
-          top: 0,
-          behavior: prefersReduced ? 'auto' : 'smooth',
-        });
-      } else {
-        scrollToSection(item.sectionId);
-      }
-    });
+    if (!comingFromSubpage) {
+      requestAnimationFrame(() => {
+        if (item.id === 'discover') {
+          const prefersReduced =
+            window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          window.scrollTo({
+            top: 0,
+            behavior: prefersReduced ? 'auto' : 'smooth',
+          });
+        } else {
+          scrollToSection(item.sectionId);
+        }
+      });
+    }
   };
 
   return (
@@ -130,13 +161,13 @@ export function Navbar({ activeMood = null }) {
         Skip to main content
       </a>
 
-      <div className="mx-auto max-w-editorial px-5 sm:px-8 lg:px-12 h-20 flex items-center justify-between gap-6">
+      <div className="mx-auto max-w-editorial px-5 sm:px-8 lg:px-12 h-20 flex items-center justify-between gap-4">
         {/* Brand Identity Lockup */}
         <a
           href="/"
           onClick={(e) => handleNavSelect(NAV_ITEMS[0], e)}
           aria-label="HIMUNI — Return to Discover"
-          className="group inline-flex items-center py-1"
+          className="group inline-flex items-center py-1 shrink-0"
         >
           <HimuniLogo
             theme="light"
@@ -149,7 +180,7 @@ export function Navbar({ activeMood = null }) {
         {/* Desktop Editorial Navigation */}
         <nav
           aria-label="Primary navigation"
-          className="hidden md:flex items-center gap-9 lg:gap-11"
+          className="hidden md:flex items-center gap-5 lg:gap-9"
         >
           {NAV_ITEMS.map((item) => {
             const isActive = activeNavId === item.id;
@@ -159,13 +190,13 @@ export function Navbar({ activeMood = null }) {
                 href={item.path}
                 onClick={(e) => handleNavSelect(item, e)}
                 aria-current={isActive ? 'location' : undefined}
-                className={`relative py-2 text-sm font-medium tracking-wide transition-colors ${
+                className={`relative py-2 text-sm font-medium tracking-wide whitespace-nowrap transition-colors ${
                   isActive
                     ? 'text-ink'
                     : 'text-ink-muted hover:text-ink'
                 }`}
               >
-                <span className="inline-flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5">
                   <span
                     aria-hidden="true"
                     className={`h-1.5 w-1.5 rounded-full transition-opacity duration-200 ${
@@ -189,13 +220,22 @@ export function Navbar({ activeMood = null }) {
           })}
         </nav>
 
-        {/* Active Feeling Indicator (Desktop) & Mobile Menu Toggle */}
-        <div className="flex items-center gap-3">
-          {activeMood ? (
+        {/* Active Feeling Indicator, Contextual Stream Control & Mobile Menu Toggle */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          {headerAudioControl}
+
+          {activeMood && (
             <button
               type="button"
-              onClick={() => scrollToSection('mood-explorer')}
-              className="hidden sm:inline-flex items-center gap-2.5 border border-ink/20 bg-cream-soft px-3.5 py-1.5 text-xs font-medium text-ink hover:border-ink transition-colors"
+              onClick={() => {
+                if (isStandaloneSubpage) {
+                  navigate('/');
+                  setTimeout(() => scrollToSection('mood-explorer'), 80);
+                } else {
+                  scrollToSection('mood-explorer');
+                }
+              }}
+              className="hidden xl:inline-flex items-center gap-2 border border-ink/20 bg-cream-soft px-3 py-1.5 text-xs font-medium text-ink hover:border-ink transition-colors"
               aria-label={`Current mood: ${activeMood.name}. Jump to mood selection`}
             >
               <span
@@ -206,10 +246,6 @@ export function Navbar({ activeMood = null }) {
               <span className="text-ink-muted">Feeling:</span>
               <span className="font-display font-semibold">{activeMood.name}</span>
             </button>
-          ) : (
-            <span className="hidden lg:inline-block text-xs tracking-wideLabel uppercase text-ink-muted">
-              Every feeling has a sound
-            </span>
           )}
 
           <button
@@ -246,7 +282,7 @@ export function Navbar({ activeMood = null }) {
                       href={item.path}
                       onClick={(e) => handleNavSelect(item, e)}
                       aria-current={isActive ? 'location' : undefined}
-                      className={`flex items-center justify-between py-4 text-lg font-display transition-colors ${
+                      className={`flex items-center justify-between py-3.5 text-lg font-display transition-colors ${
                         isActive ? 'font-semibold text-ink' : 'font-medium text-ink-muted'
                       }`}
                     >
@@ -286,7 +322,12 @@ export function Navbar({ activeMood = null }) {
                   type="button"
                   onClick={() => {
                     setMobileMenuOpen(false);
-                    scrollToSection('mood-explorer');
+                    if (isStandaloneSubpage) {
+                      navigate('/');
+                      setTimeout(() => scrollToSection('mood-explorer'), 80);
+                    } else {
+                      scrollToSection('mood-explorer');
+                    }
                   }}
                   className="underline font-medium text-ink"
                 >

@@ -12,6 +12,19 @@ export const NAV_ITEMS = [
     sectionId: 'mood-spectrum',
   },
   {
+    id: 'soundscapes',
+    label: 'Soundscapes',
+    path: '/soundscapes',
+    sectionId: 'soundscapes',
+  },
+  {
+    id: 'search',
+    label: 'Search',
+    path: '/search',
+    sectionId: 'search',
+    standaloneRoute: true,
+  },
+  {
     id: 'about',
     label: 'About',
     path: '/about',

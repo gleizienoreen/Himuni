@@ -5,7 +5,9 @@ import { MoodSelectionSection } from '../components/sections/MoodSelectionSectio
 import { MoodDiscoverySection } from '../components/sections/MoodDiscoverySection';
 import { MoodSpectrumSection } from '../components/sections/MoodSpectrumSection';
 import { EnergyPersonalization } from '../components/spectrum/EnergyPersonalization';
+import { FeaturedDiscoveriesSection } from '../components/sections/FeaturedDiscoveriesSection';
 import { SoundscapesSection } from '../components/sections/SoundscapesSection';
+import { TrackSearchSection } from '../components/sections/TrackSearchSection';
 import { AboutSection } from '../components/sections/AboutSection';
 import { useMood } from '../hooks/useMood';
 
@@ -34,10 +36,14 @@ export function DiscoverPage() {
         />
       </MoodSpectrumSection>
 
+      <FeaturedDiscoveriesSection />
+
       <SoundscapesSection
         activeMoodId={selectedMoodId}
         onAttuneSoundscape={attuneToSoundscape}
       />
+
+      <TrackSearchSection />
       <AboutSection activeMood={selectedMood} />
     </MainLayout>
   );
