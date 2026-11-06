@@ -7,6 +7,10 @@ import { EditorialReveal } from '../common/EditorialReveal';
 import { TrackArtwork } from '../discovery/TrackArtwork';
 import { TrackRow } from '../discovery/TrackRow';
 import {
+  InlineContextualPlayer,
+  TrackListenButton,
+} from '../discovery/ContextualListenControls';
+import {
   DiscoveryErrorState,
   TrackListSkeleton,
 } from '../discovery/DiscoveryStateView';
@@ -28,6 +32,16 @@ export function FeaturedDiscoveriesSection({ renderTrackRowProps = null }) {
   const spotlightExtra =
     spotlightTrack && renderTrackRowProps
       ? renderTrackRowProps(spotlightTrack)
+      : spotlightTrack
+      ? {
+          listenAction: <TrackListenButton track={spotlightTrack} />,
+          inlinePlayerPanel: (
+            <InlineContextualPlayer
+              track={spotlightTrack}
+              accentColor={selectedMood.accent}
+            />
+          ),
+        }
       : {};
 
   return (

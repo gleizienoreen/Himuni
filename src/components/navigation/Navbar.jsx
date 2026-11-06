@@ -220,10 +220,8 @@ export function Navbar({ activeMood = null, headerAudioControl = null }) {
           })}
         </nav>
 
-        {/* Active Feeling Indicator, Contextual Stream Control & Mobile Menu Toggle */}
+        {/* Active Feeling Indicator & Mobile Menu Toggle */}
         <div className="flex items-center gap-2.5 shrink-0">
-          {headerAudioControl}
-
           {activeMood && (
             <button
               type="button"
@@ -260,6 +258,9 @@ export function Navbar({ activeMood = null, headerAudioControl = null }) {
           </button>
         </div>
       </div>
+
+      {/* Contextual Active Stream Ribbon (only rendered while a track is streaming/paused) */}
+      {headerAudioControl}
 
       {/* Responsive Mobile Navigation Sheet */}
       <AnimatePresence>

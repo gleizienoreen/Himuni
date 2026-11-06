@@ -1,7 +1,12 @@
 import React from 'react';
 import { ExternalLink, Lock } from 'lucide-react';
 import { formatTrackDuration } from '../../services/audius/audiusNormalizer';
+import { useAudioPlayer } from '../../hooks/useAudioPlayer';
 import { TrackArtwork } from './TrackArtwork';
+import {
+  InlineContextualPlayer,
+  TrackListenButton,
+} from './ContextualListenControls';
 
 /**
  * Editorial track-list item presenting real Audius metadata, creator attribution,
@@ -12,14 +17,29 @@ export function TrackRow({
   index = 0,
   accentColor = '#8067E8',
   variant = 'default',
-  listenAction = null,
-  inlinePlayerPanel = null,
-  isActiveTrack = false,
+  listenAction = undefined,
+  inlinePlayerPanel = undefined,
+  isActiveTrack = undefined,
 }) {
+  const { currentTrack, status } = useAudioPlayer();
+
   if (!track) return null;
 
   const formattedDuration = formatTrackDuration(track.duration);
   const isCompact = variant === 'compact';
+
+  const resolvedIsActive =
+    isActiveTrack ?? (currentTrack?.id === track.id && status !== 'idle');
+
+  const resolvedListenAction =
+    listenAction !== undefined ? listenAction : <TrackListenButton track={track} />;
+
+  const resolvedInlinePlayer =
+    inlinePlayerPanel !== undefined ? (
+      inlinePlayerPanel
+    ) : (
+      <InlineContextualPlayer track={track} accentColor={accentColor} />
+    );
 
   const metadataPills = [];
   if (track.genre) metadataPills.push(track.genre);
@@ -43,7 +63,7 @@ export function TrackRow({
   return (
     <article
       className={`group transition-colors duration-200 ${
-        isActiveTrack
+        resolvedIsActive
           ? 'bg-cream-soft border-l-2 border-l-ink pl-3 sm:pl-4 pr-2'
           : 'hover:bg-cream-soft/65'
       } ${isCompact ? 'py-4' : 'py-4 sm:py-5'}`}
@@ -99,12 +119,12 @@ export function TrackRow({
                   href={track.artistUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-ink hover:underline truncate max-w-[16rem]"
+                  className="font-medium text-ink hover:underline truncate max-w-[12rem] sm:max-w-[16rem]"
                 >
                   {track.artistName}
                 </a>
               ) : (
-                <span className="font-medium text-ink truncate max-w-[16rem]">
+                <span className="font-medium text-ink truncate max-w-[12rem] sm:max-w-[16rem]">
                   {track.artistName}
                 </span>
               )}
@@ -127,7 +147,7 @@ export function TrackRow({
 
               {!isCompact && track.license && (
                 <span
-                  className="border border-ink/15 bg-cream px-2 py-0.5 text-[11px] text-ink-subtle truncate max-w-[12rem]"
+                  className="border border-ink/15 bg-cream px-2 py-0.5 text-[11px] text-ink-subtle truncate max-w-[11rem] sm:max-w-[12rem]"
                   title={`License: ${track.license}`}
                 >
                   {track.license}
@@ -146,7 +166,7 @@ export function TrackRow({
 
         {/* Right: Contextual Listen Control + External Audius Track Link */}
         <div className="flex items-center justify-between sm:justify-end gap-2.5 pl-9 sm:pl-0 shrink-0">
-          {listenAction}
+          {resolvedListenAction}
 
           {track.trackUrl && (
             <a
@@ -154,7 +174,7 @@ export function TrackRow({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Open "${track.title}" by ${track.artistName} on Audius`}
-              className="inline-flex items-center gap-1.5 border border-ink/20 bg-cream px-3 py-2 text-xs font-medium text-ink hover:border-ink transition-colors"
+              className="inline-flex min-h-[40px] items-center gap-1.5 border border-ink/20 bg-cream px-3 py-2 text-xs font-medium text-ink hover:border-ink transition-colors"
             >
               <span>Audius</span>
               <ExternalLink className="w-3.5 h-3.5 text-ink-muted" aria-hidden="true" />
@@ -163,7 +183,7 @@ export function TrackRow({
         </div>
       </div>
 
-      {inlinePlayerPanel}
+      {resolvedInlinePlayer}
     </article>
   );
 }
