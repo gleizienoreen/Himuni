@@ -2,6 +2,7 @@ import React from 'react';
 import { useMood } from '../../hooks/useMood';
 import { MoodSpectrumCanvas } from '../spectrum/MoodSpectrumCanvas';
 import { SpectrumControls } from '../spectrum/SpectrumControls';
+import { EditorialReveal } from '../common/EditorialReveal';
 
 export function MoodSpectrumSection({ children }) {
   const {
@@ -22,7 +23,7 @@ export function MoodSpectrumSection({ children }) {
     >
       <div className="mx-auto max-w-editorial px-5 sm:px-8 lg:px-12">
         {/* Editorial Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-12 border-b border-ink/15 items-end">
+        <EditorialReveal className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-12 border-b border-ink/15 items-end">
           <div className="lg:col-span-7 space-y-3">
             <p className="text-xs font-semibold uppercase tracking-wideLabel text-ink-muted">
               Mood Spectrum
@@ -42,7 +43,7 @@ export function MoodSpectrumSection({ children }) {
               how stillness, momentum, introspection, and brightness meet.
             </p>
           </div>
-        </div>
+        </EditorialReveal>
 
         {/* 2D Spectrum Field + Accessible Companion Panel */}
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

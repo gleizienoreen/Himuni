@@ -98,7 +98,7 @@ export function MoodTile({ mood, isSelected, onSelect }) {
             <MoodArtwork
               moodId={mood.id}
               isSelected={isSelected}
-              className="w-32 h-22 transition-transform duration-300 group-hover:scale-105"
+              className="w-32 h-20 transition-transform duration-300 group-hover:scale-105"
             />
           </div>
 

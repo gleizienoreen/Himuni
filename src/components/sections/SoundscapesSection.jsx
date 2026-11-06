@@ -2,6 +2,7 @@ import React from 'react';
 import { Sparkles, ArrowUpRight } from 'lucide-react';
 import { SOUNDSCAPES } from '../../data/soundscapes';
 import { SoundscapeArtwork } from '../common/SoundscapeArtwork';
+import { EditorialReveal } from '../common/EditorialReveal';
 import { scrollToSection } from '../../utils/navigation';
 
 export function SoundscapesSection({ activeMoodId = null, onAttuneSoundscape = null }) {
@@ -13,7 +14,7 @@ export function SoundscapesSection({ activeMoodId = null, onAttuneSoundscape = n
     >
       <div className="mx-auto max-w-editorial px-5 sm:px-8 lg:px-12">
         {/* Editorial Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-12 border-b border-ink/15 items-end">
+        <EditorialReveal className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-12 border-b border-ink/15 items-end">
           <div className="lg:col-span-7 space-y-4">
             <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wideLabel text-ink-muted">
               <Sparkles className="w-3.5 h-3.5 text-ink" aria-hidden="true" />
@@ -34,7 +35,7 @@ export function SoundscapesSection({ activeMoodId = null, onAttuneSoundscape = n
               conceptual editions below.
             </p>
           </div>
-        </div>
+        </EditorialReveal>
 
         {/* Asymmetric Editorial Exhibition Grid */}
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-7">

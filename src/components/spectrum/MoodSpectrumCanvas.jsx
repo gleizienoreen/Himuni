@@ -2,6 +2,8 @@ import React, { useCallback, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { clamp01, describeSpectrumPosition } from '../../utils/spectrum';
 
+const LABEL_PLACEMENT_ABOVE = new Set(['dreamy', 'romantic', 'joyful', 'calm', 'melancholic']);
+
 /**
  * Interactive 2D Emotional Map for HIMUNI.
  * Horizontal axis: Calm (0) -> Energetic (1)
@@ -25,9 +27,8 @@ export function MoodSpectrumCanvas({
     const rect = el.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return null;
 
-    // Inset padding margin (6%) keeps edge taps comfortably inside the frame
-    const padX = rect.width * 0.05;
-    const padY = rect.height * 0.06;
+    const padX = rect.width * 0.08;
+    const padY = rect.height * 0.1;
     const usableW = rect.width - padX * 2;
     const usableH = rect.height - padY * 2;
 
@@ -41,7 +42,6 @@ export function MoodSpectrumCanvas({
   }, []);
 
   const handlePointerDown = (e) => {
-    // Ignore if user clicked directly on a predefined mood button
     if (e.target.closest('[data-mood-node="true"]')) return;
 
     const next = resolvePointerCoordinates(e.clientX, e.clientY);
@@ -112,9 +112,9 @@ export function MoodSpectrumCanvas({
     }
   };
 
-  // Map normalized [0..1] into the 5%..95% safe interior stage so markers never clip
-  const toStageLeft = (x) => `${5 + x * 90}%`;
-  const toStageTop = (y) => `${6 + (1 - y) * 88}%`;
+  // Map normalized [0..1] into the 8%..92% horizontal & 10%..90% vertical stage
+  const toStageLeft = (x) => `${8 + x * 84}%`;
+  const toStageTop = (y) => `${10 + (1 - y) * 80}%`;
 
   const cursorLeft = toStageLeft(coordinates.x);
   const cursorTop = toStageTop(coordinates.y);
@@ -123,11 +123,11 @@ export function MoodSpectrumCanvas({
 
   return (
     <div className="space-y-3">
-      {/* Top Axis Label: BRIGHT */}
-      <div className="flex items-center justify-between text-[11px] uppercase tracking-wideLabel text-ink-muted px-1">
-        <span>Quiet &amp; Floating</span>
+      {/* Top Axis Strip: BRIGHT */}
+      <div className="flex items-center justify-between text-[11px] uppercase tracking-wideLabel text-ink-muted px-0.5">
+        <span>&larr; Calm</span>
         <span className="font-display font-semibold text-ink">Bright &uarr;</span>
-        <span>Radiant &amp; Kinetic</span>
+        <span>Energetic &rarr;</span>
       </div>
 
       {/* Interactive Cartographic Emotional Field */}
@@ -144,7 +144,7 @@ export function MoodSpectrumCanvas({
         onPointerUp={handlePointerEnd}
         onPointerCancel={handlePointerEnd}
         style={{ touchAction: 'none' }}
-        className={`relative w-full aspect-[4/4] sm:aspect-[16/11] border border-ink bg-cream select-none overflow-hidden ${
+        className={`relative w-full aspect-[10/9] sm:aspect-[16/11] border border-ink bg-cream select-none overflow-hidden ${
           isDragging ? 'cursor-grabbing' : 'cursor-crosshair'
         }`}
       >
@@ -183,7 +183,7 @@ export function MoodSpectrumCanvas({
           <rect width="800" height="550" fill="url(#zone-introspective-calm)" />
           <rect width="800" height="550" fill="url(#zone-introspective-energetic)" />
 
-          {/* Organic cartographic contour rings (emotional landscape isolines) */}
+          {/* Organic cartographic contour rings */}
           <path
             d="M 90 275 C 140 110, 340 65, 470 120 C 620 180, 725 140, 740 285 C 755 420, 580 485, 410 455 C 230 425, 45 430, 90 275 Z"
             fill="none"
@@ -216,7 +216,7 @@ export function MoodSpectrumCanvas({
             x2="760"
             y2="275"
             stroke="#24232B"
-            strokeOpacity="0.14"
+            strokeOpacity="0.13"
             strokeDasharray="4 6"
             strokeWidth="1.1"
           />
@@ -226,7 +226,7 @@ export function MoodSpectrumCanvas({
             x2="400"
             y2="518"
             stroke="#24232B"
-            strokeOpacity="0.14"
+            strokeOpacity="0.13"
             strokeDasharray="4 6"
             strokeWidth="1.1"
           />
@@ -251,24 +251,10 @@ export function MoodSpectrumCanvas({
           </svg>
         )}
 
-        {/* Side Compass Captions inside safe edges */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] sm:text-[11px] font-display font-semibold uppercase tracking-wideLabel text-ink/70 bg-cream/80 px-1.5 py-0.5"
-        >
-          &larr; Calm
-        </span>
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] sm:text-[11px] font-display font-semibold uppercase tracking-wideLabel text-ink/70 bg-cream/80 px-1.5 py-0.5"
-        >
-          Energetic &rarr;
-        </span>
-
         {/* Predefined Mood Landmarks */}
         {moods.map((mood) => {
           const isCurrentMood = mood.id === selectedMood.id;
-          const placeLabelLeft = mood.coordinates.x > 0.72;
+          const placeAbove = LABEL_PLACEMENT_ABOVE.has(mood.id);
 
           return (
             <button
@@ -285,28 +271,28 @@ export function MoodSpectrumCanvas({
                 left: toStageLeft(mood.coordinates.x),
                 top: toStageTop(mood.coordinates.y),
               }}
-              className="group absolute -translate-x-1/2 -translate-y-1/2 z-10 min-w-[40px] min-h-[40px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+              className={`group absolute -translate-x-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ink ${
+                isCurrentMood ? 'z-30' : 'z-10'
+              }`}
             >
               {/* Node dot */}
               <span
                 className={`relative flex items-center justify-center rounded-full border transition-transform duration-200 ${
                   isCurrentMood
                     ? 'h-4 w-4 border-ink scale-110 shadow-sm'
-                    : 'h-3.5 w-3.5 border-ink/70 group-hover:scale-125'
+                    : 'h-3.5 w-3.5 border-ink/75 group-hover:scale-125'
                 }`}
                 style={{ backgroundColor: mood.accent }}
               />
 
-              {/* Editorial Landmark Label */}
+              {/* Collision-free Editorial Landmark Label */}
               <span
-                className={`pointer-events-none absolute whitespace-nowrap px-2 py-0.5 text-[11px] sm:text-xs font-display tracking-tight transition-colors ${
-                  placeLabelLeft
-                    ? 'right-full mr-1 sm:mr-1.5'
-                    : 'left-full ml-1 sm:ml-1.5'
+                className={`pointer-events-none absolute left-1/2 -translate-x-1/2 whitespace-nowrap px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs font-display tracking-tight transition-colors ${
+                  placeAbove ? 'bottom-[calc(50%+10px)]' : 'top-[calc(50%+10px)]'
                 } ${
                   isCurrentMood
                     ? 'bg-ink text-cream font-semibold'
-                    : 'bg-cream/90 text-ink border border-ink/15 font-medium group-hover:border-ink'
+                    : 'bg-cream/95 text-ink border border-ink/20 font-medium group-hover:border-ink'
                 }`}
               >
                 {mood.name}
@@ -329,12 +315,10 @@ export function MoodSpectrumCanvas({
           }
           className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center"
         >
-          {/* Outer atmospheric halo */}
           <span
-            className="h-12 w-12 sm:h-14 sm:w-14 rounded-full border border-ink/50 flex items-center justify-center transition-colors duration-300"
+            className="h-11 w-11 sm:h-14 sm:w-14 rounded-full border border-ink/50 flex items-center justify-center transition-colors duration-300"
             style={{ backgroundColor: `${selectedMood.accent}33` }}
           >
-            {/* Inner precision ring */}
             <span className="h-5 w-5 rounded-full border-2 border-ink bg-cream flex items-center justify-center shadow-sm">
               <span
                 className="h-2 w-2 rounded-full"
@@ -345,11 +329,11 @@ export function MoodSpectrumCanvas({
         </motion.div>
       </div>
 
-      {/* Bottom Axis Label: INTROSPECTIVE */}
-      <div className="flex items-center justify-between text-[11px] uppercase tracking-wideLabel text-ink-muted px-1">
-        <span>Deep &amp; Hushed</span>
+      {/* Bottom Axis Strip: INTROSPECTIVE */}
+      <div className="flex items-center justify-between text-[11px] uppercase tracking-wideLabel text-ink-muted px-0.5">
+        <span>Stillness</span>
         <span className="font-display font-semibold text-ink">Introspective &darr;</span>
-        <span>Warm &amp; Reflective</span>
+        <span>Momentum</span>
       </div>
     </div>
   );

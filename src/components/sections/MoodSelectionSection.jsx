@@ -2,6 +2,7 @@ import React from 'react';
 import { useMood } from '../../hooks/useMood';
 import { MoodTile } from '../mood/MoodTile';
 import { MoodSummary } from '../mood/MoodSummary';
+import { EditorialReveal } from '../common/EditorialReveal';
 
 export function MoodSelectionSection() {
   const {
@@ -23,7 +24,7 @@ export function MoodSelectionSection() {
     >
       <div className="mx-auto max-w-editorial px-5 sm:px-8 lg:px-12">
         {/* Editorial Section Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-12 border-b border-ink/15 items-end">
+        <EditorialReveal className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-12 border-b border-ink/15 items-end">
           <div className="lg:col-span-7 space-y-3">
             <p className="text-xs font-semibold uppercase tracking-wideLabel text-ink-muted">
               Interactive Mood Exploration
@@ -43,7 +44,7 @@ export function MoodSelectionSection() {
               visual atmosphere and aligns your position on the Mood Spectrum.
             </p>
           </div>
-        </div>
+        </EditorialReveal>
 
         {/* Asymmetric 12-column Mood Mosaic */}
         <div

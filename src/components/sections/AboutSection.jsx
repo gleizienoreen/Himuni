@@ -2,6 +2,7 @@ import React from 'react';
 import { BRAND } from '../../data/brand';
 import { HimuniLogo } from '../branding/HimuniLogo';
 import { BaybayinMark } from '../branding/BaybayinMark';
+import { EditorialReveal } from '../common/EditorialReveal';
 
 export function AboutSection({ activeMood = null }) {
   const accentColor = activeMood?.accent || '#8067E8';
@@ -24,7 +25,7 @@ export function AboutSection({ activeMood = null }) {
         </div>
 
         {/* Main editorial essay + etymology columns */}
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start">
+        <EditorialReveal className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start">
           <div className="lg:col-span-7 space-y-6">
             <h2
               id="about-heading"
@@ -116,7 +117,7 @@ export function AboutSection({ activeMood = null }) {
               </div>
             </div>
           </div>
-        </div>
+        </EditorialReveal>
 
         {/* Light & Dark Brand Mark Specimen */}
         <div className="mt-16 pt-12 border-t border-ink/15">
