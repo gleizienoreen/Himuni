@@ -6,7 +6,10 @@ export const SOUNDSCAPES = [
     description:
       'Open windows, unhurried mornings, and warm tonal textures for moments when light spills gently into the room.',
     moodIds: ['joyful', 'calm'],
-    moodLabel: 'Joyful · Calm',
+    moodLabel: 'Joyful · Upbeat',
+    moodTags: ['Joyful', 'Upbeat'],
+    soundFocus: 'Bright acoustic and pop',
+    queries: ['bright acoustic pop', 'upbeat indie pop', 'sunny acoustic'],
     coordinates: { x: 0.68, y: 0.84 },
     palette: {
       bg: '#FAF3D6',
@@ -23,7 +26,10 @@ export const SOUNDSCAPES = [
     description:
       'Weightless, suspended harmonies for quiet late hours when the world slows down and thoughts drift without urgency.',
     moodIds: ['dreamy', 'melancholic'],
-    moodLabel: 'Dreamy · Melancholic',
+    moodLabel: 'Dreamy · Atmospheric',
+    moodTags: ['Dreamy', 'Atmospheric'],
+    soundFocus: 'Ambient and downtempo',
+    queries: ['ambient downtempo', 'atmospheric chillout', 'midnight ambient'],
     coordinates: { x: 0.24, y: 0.48 },
     palette: {
       bg: '#24232B',
@@ -40,8 +46,11 @@ export const SOUNDSCAPES = [
     title: 'Soft Afternoons',
     description:
       'Tender pacing and unguarded warmth for lingering conversations, quiet reading, and light moving across the floor.',
-    moodIds: ['romantic', 'calm'],
-    moodLabel: 'Romantic · Calm',
+    moodIds: ['calm', 'romantic'],
+    moodLabel: 'Calm · Relaxation',
+    moodTags: ['Calm', 'Relaxation'],
+    soundFocus: 'Acoustic and instrumental',
+    queries: ['calm acoustic instrumental', 'soft guitar instrumental', 'relaxation acoustic'],
     coordinates: { x: 0.36, y: 0.66 },
     palette: {
       bg: '#F8EAEF',
@@ -57,8 +66,11 @@ export const SOUNDSCAPES = [
     title: 'Beautifully Overwhelmed',
     description:
       'Swelling, expressive layers for moments that hold too much feeling at once—cathartic, vivid, and deeply human.',
-    moodIds: ['energetic', 'melancholic'],
-    moodLabel: 'Energetic · Melancholic',
+    moodIds: ['melancholic', 'energetic'],
+    moodLabel: 'Melancholic · Reflective',
+    moodTags: ['Melancholic', 'Reflective'],
+    soundFocus: 'Piano and atmospheric indie',
+    queries: ['piano indie', 'atmospheric indie', 'melancholic piano'],
     coordinates: { x: 0.72, y: 0.56 },
     palette: {
       bg: '#FCE5DB',
@@ -76,6 +88,9 @@ export const SOUNDSCAPES = [
       'Clear horizons after rain: grounded, forward-looking resonance for turning the page with quiet conviction.',
     moodIds: ['focused', 'nostalgic'],
     moodLabel: 'Focused · Nostalgic',
+    moodTags: ['Focused', 'Nostalgic'],
+    soundFocus: 'Reflective electronic and indie',
+    queries: ['melodic electronic indie', 'reflective electronic', 'indie instrumental'],
     coordinates: { x: 0.52, y: 0.60 },
     palette: {
       bg: '#E4EFF3',
@@ -86,3 +101,7 @@ export const SOUNDSCAPES = [
     span: 'lg:col-span-4',
   },
 ];
+
+export function getSoundscapeById(soundscapeId) {
+  return SOUNDSCAPES.find((item) => item.id === soundscapeId) || null;
+}
