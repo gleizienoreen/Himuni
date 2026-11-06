@@ -54,7 +54,7 @@ export function SoundscapePage({
           <div className="pb-8 border-b border-ink/15 flex flex-wrap items-center justify-between gap-4">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 border border-ink/25 bg-cream-soft px-4 py-2 text-xs font-semibold uppercase tracking-wideLabel text-ink hover:border-ink transition-colors"
+              className="inline-flex min-h-[40px] items-center gap-2 border border-ink/25 bg-cream-soft px-4 py-2 text-xs font-semibold uppercase tracking-wideLabel text-ink hover:border-ink transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
               <span>Back to Discover</span>
@@ -108,7 +108,7 @@ export function SoundscapePage({
                     key={mood.id}
                     type="button"
                     onClick={() => selectMood(mood.id)}
-                    className="inline-flex items-center gap-1.5 border border-ink/25 bg-cream-soft px-3 py-1.5 text-xs font-medium text-ink hover:border-ink transition-colors"
+                    className="inline-flex min-h-[38px] items-center gap-1.5 border border-ink/25 bg-cream-soft px-3 py-1.5 text-xs font-medium text-ink hover:border-ink transition-colors"
                   >
                     <span
                       aria-hidden="true"
@@ -126,7 +126,7 @@ export function SoundscapePage({
                     navigate('/');
                     setTimeout(() => scrollToSection('mood-spectrum'), 90);
                   }}
-                  className="inline-flex items-center gap-1.5 border border-ink/25 bg-cream px-3 py-1.5 text-xs font-medium text-ink hover:border-ink transition-colors"
+                  className="inline-flex min-h-[38px] items-center gap-1.5 border border-ink/25 bg-cream px-3 py-1.5 text-xs font-medium text-ink hover:border-ink transition-colors"
                 >
                   <Compass className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>View on Spectrum</span>

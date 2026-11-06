@@ -115,7 +115,7 @@ export function TrackSearchSection({
                 type="button"
                 onClick={clearSearch}
                 aria-label="Clear search query"
-                className="mr-3 inline-flex items-center gap-1.5 border border-ink/25 bg-cream px-3 py-1.5 text-xs font-semibold uppercase tracking-wideLabel text-ink hover:border-ink transition-colors"
+                className="mr-3 inline-flex min-h-[40px] items-center gap-1.5 border border-ink/25 bg-cream px-3 py-1.5 text-xs font-semibold uppercase tracking-wideLabel text-ink hover:border-ink transition-colors"
               >
                 <X className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>Clear</span>
@@ -136,7 +136,7 @@ export function TrackSearchSection({
                   key={term}
                   type="button"
                   onClick={() => applySuggestedTerm(term)}
-                  className={`px-3 py-1.5 border transition-colors ${
+                  className={`inline-flex min-h-[38px] items-center px-3.5 py-2 border transition-colors ${
                     isActiveTerm
                       ? 'bg-ink text-cream border-ink font-semibold'
                       : 'bg-cream text-ink border-ink/20 hover:border-ink'

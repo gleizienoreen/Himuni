@@ -168,7 +168,7 @@ export function SoundscapesSection({
                 <div className="px-6 pb-6 sm:px-7 sm:pb-7 pt-3 flex flex-wrap items-center justify-between gap-3 border-t border-ink/10 mt-2">
                   <Link
                     to={`/soundscapes/${item.id}`}
-                    className="inline-flex items-center gap-2 bg-ink text-cream px-4 py-2.5 text-xs font-semibold uppercase tracking-wideLabel hover:bg-ink-soft transition-colors"
+                    className="inline-flex min-h-[40px] items-center gap-2 bg-ink text-cream px-4 py-2.5 text-xs font-semibold uppercase tracking-wideLabel hover:bg-ink-soft transition-colors"
                   >
                     <span>Open Soundscape</span>
                     <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
@@ -181,7 +181,7 @@ export function SoundscapesSection({
                         onAttuneSoundscape(item);
                         scrollToSection('mood-spectrum');
                       }}
-                      className="inline-flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink underline py-1 transition-colors"
+                      className="inline-flex min-h-[40px] items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink underline py-1 transition-colors"
                     >
                       <Compass className="w-3.5 h-3.5" aria-hidden="true" />
                       <span>Attune Spectrum</span>

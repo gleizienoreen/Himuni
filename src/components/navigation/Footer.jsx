@@ -1,7 +1,8 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, ExternalLink } from 'lucide-react';
 import { BRAND } from '../../data/brand';
+import { AUDIUS_CONFIG } from '../../services/audius/audiusConfig';
 import { HimuniLogo } from '../branding/HimuniLogo';
 import { NAV_ITEMS, scrollToSection } from '../../utils/navigation';
 
@@ -12,16 +13,31 @@ export function Footer({ activeMood = null }) {
 
   const handleLinkClick = (item, e) => {
     e.preventDefault();
+    if (item.standaloneRoute) {
+      if (location.pathname !== item.path) {
+        navigate(item.path);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    const comingFromSubpage =
+      location.pathname === '/search' || location.pathname.startsWith('/soundscapes/');
+
     if (location.pathname !== item.path) {
       navigate(item.path);
     }
-    if (item.id === 'discover') {
-      const prefersReduced =
-        window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
-    } else {
-      scrollToSection(item.sectionId);
+
+    if (!comingFromSubpage) {
+      if (item.id === 'discover') {
+        const prefersReduced =
+          window.matchMedia &&
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
+      } else {
+        scrollToSection(item.sectionId);
+      }
     }
   };
 
@@ -93,9 +109,20 @@ export function Footer({ activeMood = null }) {
 
         <div className="pt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-cream/55">
           <p>
-            {BRAND.name} · {BRAND.tagline}
+            {BRAND.name} &middot; {BRAND.tagline}
           </p>
-          <p>Phase 1 — Mood-led Music Discovery Experience</p>
+          <p className="inline-flex flex-wrap items-center gap-1.5">
+            <span>Mood-led Music Discovery &middot; Music powered by</span>
+            <a
+              href={AUDIUS_CONFIG.webOrigin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cream/85 underline hover:text-cream inline-flex items-center gap-1"
+            >
+              <span>Audius</span>
+              <ExternalLink className="w-3 h-3" aria-hidden="true" />
+            </a>
+          </p>
         </div>
       </div>
     </footer>

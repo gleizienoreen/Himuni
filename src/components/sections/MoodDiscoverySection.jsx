@@ -53,7 +53,8 @@ export function MoodDiscoverySection({ renderTrackRowProps = null }) {
                 id="mood-recommendations-heading"
                 className="font-display text-3xl sm:text-5xl font-semibold tracking-editorial leading-[1.06] text-ink"
               >
-                Sounds for a{' '}
+                Sounds for{' '}
+                {/^[aeiou]/i.test(selectedMood.name) ? 'an' : 'a'}{' '}
                 <span
                   className="font-sans italic font-normal underline decoration-2 underline-offset-4"
                   style={{ textDecorationColor: selectedMood.accent }}

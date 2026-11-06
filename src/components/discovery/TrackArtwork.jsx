@@ -34,6 +34,15 @@ export function TrackArtwork({
 
   const activeSrc = candidates[candidateIndex] || '';
 
+  // Advance to the next Audius mirror (or geometric fallback) if a validator node stalls
+  useEffect(() => {
+    if (!activeSrc || loaded) return undefined;
+    const stallTimer = setTimeout(() => {
+      setCandidateIndex((prev) => prev + 1);
+    }, 3500);
+    return () => clearTimeout(stallTimer);
+  }, [activeSrc, loaded]);
+
   return (
     <div
       className={`relative shrink-0 overflow-hidden border border-ink/20 bg-cream-deep ${sizeClass} ${className}`}
@@ -49,7 +58,6 @@ export function TrackArtwork({
           <img
             src={activeSrc}
             alt={`Artwork for ${title}`}
-            loading="lazy"
             decoding="async"
             referrerPolicy="no-referrer"
             onLoad={() => setLoaded(true)}

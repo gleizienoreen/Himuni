@@ -17,7 +17,7 @@ export const SOUNDSCAPES = [
       secondary: '#F18B63',
       accent: '#24232B',
     },
-    span: 'lg:col-span-7',
+    span: 'md:col-span-2 lg:col-span-7',
   },
   {
     id: 'midnight-and-morning',

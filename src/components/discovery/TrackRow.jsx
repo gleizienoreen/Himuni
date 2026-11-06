@@ -68,7 +68,13 @@ export function TrackRow({
           : 'hover:bg-cream-soft/65'
       } ${isCompact ? 'py-4' : 'py-4 sm:py-5'}`}
     >
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div
+        className={
+          isCompact
+            ? 'flex flex-col gap-3.5'
+            : 'flex flex-col sm:flex-row sm:items-center justify-between gap-4'
+        }
+      >
         {/* Left: Editorial Index + Artwork + Track & Artist Details */}
         <div className="flex items-start sm:items-center gap-3.5 sm:gap-4 min-w-0 flex-1">
           <span
@@ -165,7 +171,13 @@ export function TrackRow({
         </div>
 
         {/* Right: Contextual Listen Control + External Audius Track Link */}
-        <div className="flex items-center justify-between sm:justify-end gap-2.5 pl-9 sm:pl-0 shrink-0">
+        <div
+          className={
+            isCompact
+              ? 'flex items-center gap-2.5 pl-9 sm:pl-10'
+              : 'flex items-center justify-between sm:justify-end gap-2.5 pl-9 sm:pl-0 shrink-0'
+          }
+        >
           {resolvedListenAction}
 
           {track.trackUrl && (

@@ -3,18 +3,39 @@
 > **Every feeling has a sound.**  
 > *Not every feeling needs words. Sometimes, it just needs a sound.*
 
-**HIMUNI** is a mood-led music discovery experience inspired by the Filipino words **Himig** (*melody*) and **Muni-muni** (*quiet reflection*). Rather than imitating conventional streaming platforms, HIMUNI invites users to explore emotional territories, personal energy levels, and lived atmospheres through an editorial, interactive interface.
+**HIMUNI** is a mood-led music discovery experience inspired by the Filipino words **Himig** (*melody*) and **Muni-muni** (*quiet reflection*). Rather than imitating conventional streaming platforms, HIMUNI invites people to explore emotional states, personal energy levels, and lived moments through an editorial, interactive interface powered by real music from the official **Audius API**.
 
 ---
 
-## Phase 1 Highlights
+## Implemented Experience (Phase 1 + Phase 2)
 
 - **Brand Identity & Baybayin Companion Mark**: Primary `HIMUNI` wordmark paired with its Baybayin inscription (`ᜑᜒᜋᜓᜈᜒ` — *hi-mu-ni*) rendered reliably via bundled `Noto Sans Tagalog`, alongside an abstract resonance-inspired symbol in light and dark treatments.
-- **Editorial Landing Experience**: Asymmetric typographic hero (*"What does your world sound like today?"*) reactive to the currently selected emotional state.
-- **Interactive Mood Selection**: Eight distinct mood experiences (*Dreamy*, *Focused*, *Melancholic*, *Energetic*, *Romantic*, *Nostalgic*, *Joyful*, *Calm*) with bespoke geometric artwork, unique chromatic accents, and a live reflection summary.
-- **2D Mood Spectrum**: Interactive cartographic emotional map spanning **Calm ↔ Energetic** and **Introspective ↔ Bright** with pointer tap/drag navigation, predefined mood landmarks, and accessible keyboard controls.
-- **Energy Personalization & Persistence**: Personal `0–100` energy preference (*Low energy*, *Balanced*, *High energy*) synchronized with the Mood Spectrum and safely persisted in `localStorage`.
-- **Soundscapes Concept Previews**: Five conceptual editions (*A Little Sunshine*, *Somewhere Between Midnight and Morning*, *Soft Afternoons*, *Beautifully Overwhelmed*, *The Feeling of Starting Over*).
+- **Interactive Mood Selection & 2D Mood Spectrum**: Eight emotional territories (*Dreamy*, *Focused*, *Melancholic*, *Energetic*, *Romantic*, *Nostalgic*, *Joyful*, *Calm*) synchronized two-way with a 2D cartographic map (**Calm ↔ Energetic**, **Introspective ↔ Bright**) and `0–100` personal energy refinement persisted in `localStorage`.
+- **Mood- & Energy-Led Audius Discovery**: Curated mood-to-music associations (`src/data/moodRecommendations.js`) refined deterministically by low, balanced, and high energy levels—presenting **Recommended Tracks**, **Additional Discoveries**, and **Refresh recommendations** using real Audius metadata.
+- **Featured Discoveries**: Editorial spotlight (*A discovery worth hearing*, *New sounds to explore*, and *Sounds outside your usual mood*) combining live Audius weekly trending selections with contrasting-mood sounds.
+- **HIMUNI Soundscapes**: Five curated discovery editions (*A Little Sunshine*, *Somewhere Between Midnight and Morning*, *Soft Afternoons*, *Beautifully Overwhelmed*, *The Feeling of Starting Over*) with dedicated `/soundscapes/:soundscapeId` pages, live returned track counts, pagination, and Spectrum attunement.
+- **Track & Artist Search**: Debounced catalog search (`/search` and inline on Discover) with `AbortController` cancellation, clear action, empty/error/rate-limit states, retry, and `Load more` pagination.
+- **Contextual Audius Listening**: Lightweight inline listening via the official `GET /v1/tracks/{track_id}/stream?app_name=himuni` endpoint—stopping previous streams automatically, respecting creator-gated/unavailable tracks, handling playback errors, crediting artists and Audius, and avoiding any permanent bottom music player bar.
+
+---
+
+## Audius API Configuration
+
+Read-only discovery works out of the box using `app_name=himuni` against `https://api.audius.co/v1` with automatic discovery-node fallback.
+
+To customize configuration or supply an optional public Audius API key, copy `.env.example` to `.env`:
+
+```bash
+cp .env.example .env
+```
+
+> **Security Note**: Never place a Bearer token or private secret in `.env` or client-side code.
+
+---
+
+## Attribution & Content Rights
+
+All tracks, audio streams, and cover artwork surfaced in HIMUNI are served directly from **Audius** and belong to their respective creators. HIMUNI does not download, rehost, or claim ownership of third-party audio or artwork; content licensing and streaming availability vary by artist and track.
 
 ---
 
@@ -36,7 +57,7 @@ npm install
 npm run dev
 ```
 
-Build for production:
+Build and preview production bundle:
 
 ```bash
 npm run build

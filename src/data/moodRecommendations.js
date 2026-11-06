@@ -1,4 +1,4 @@
-import { getEnergyBand } from '../utils/spectrum';
+import { getEnergyBand } from '../utils/spectrum.js';
 
 /**
  * Curated mood-to-music discovery mappings and deterministic energy refinements.
@@ -282,20 +282,29 @@ export function resolveMoodDiscoveryPlan(moodId, energy = 50, refreshIndex = 0) 
  */
 export function rankTracksByEnergyMetadata(tracks, { preferredMinBpm, preferredMaxBpm } = {}) {
   if (!Array.isArray(tracks) || tracks.length <= 1) return tracks || [];
-  if (!preferredMinBpm && !preferredMaxBpm) return tracks;
 
   return tracks
     .map((track, originalIndex) => {
-      let score = 1; // Neutral score when API does not report BPM
-      if (typeof track.bpm === 'number' && track.bpm > 0) {
+      const availabilityRank = track.isStreamable ? 2 : track.isAvailable ? 1 : 0;
+      let bpmScore = 1; // Neutral score when API does not report BPM
+      if (
+        (preferredMinBpm || preferredMaxBpm) &&
+        typeof track.bpm === 'number' &&
+        track.bpm > 0
+      ) {
         const matchesMin = !preferredMinBpm || track.bpm >= preferredMinBpm;
         const matchesMax = !preferredMaxBpm || track.bpm <= preferredMaxBpm;
-        score = matchesMin && matchesMax ? 2 : 0;
+        bpmScore = matchesMin && matchesMax ? 2 : 0;
       }
-      return { track, score, originalIndex };
+      return { track, availabilityRank, bpmScore, originalIndex };
     })
     .sort((a, b) => {
-      if (b.score !== a.score) return b.score - a.score;
+      if (b.availabilityRank !== a.availabilityRank) {
+        return b.availabilityRank - a.availabilityRank;
+      }
+      if (b.bpmScore !== a.bpmScore) {
+        return b.bpmScore - a.bpmScore;
+      }
       return a.originalIndex - b.originalIndex;
     })
     .map((entry) => entry.track);

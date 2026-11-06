@@ -1,4 +1,4 @@
-import { MOODS } from '../data/moods';
+import { MOODS } from '../data/moods.js';
 
 export function clamp01(value) {
   if (typeof value !== 'number' || Number.isNaN(value)) return 0.5;
