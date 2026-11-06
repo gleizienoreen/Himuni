@@ -1,0 +1,124 @@
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/600.css';
+@import '@fontsource/space-grotesk/700.css';
+
+@import '@fontsource/dm-sans/400.css';
+@import '@fontsource/dm-sans/400-italic.css';
+@import '@fontsource/dm-sans/500.css';
+@import '@fontsource/dm-sans/500-italic.css';
+@import '@fontsource/dm-sans/600.css';
+
+@import '@fontsource/noto-sans-tagalog/400.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-cream: #F5F1EA;
+  --color-ink: #24232B;
+  --color-violet: #8067E8;
+  --color-tangerine: #F18B63;
+  --color-butter: #E8D98E;
+  --color-sky: #BBD5DF;
+  --color-blush: #E8B8C8;
+  --mood-accent: #8067E8;
+  --mood-surface: #EAE5FB;
+}
+
+@layer base {
+  html {
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    background-color: #F5F1EA;
+    color: #24232B;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: #F5F1EA;
+    color: #24232B;
+    overflow-x: clip;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.03em;
+  }
+
+  :focus-visible {
+    outline: 2px solid #24232B;
+    outline-offset: 3px;
+  }
+}
+
+.font-baybayin {
+  font-family: 'Noto Sans Tagalog', sans-serif;
+  font-synthesis: none;
+  line-height: 1.35;
+}
+
+/* Custom tactile range input for Energy Personalization */
+input[type='range'].himuni-range {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type='range'].himuni-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 2px;
+  background: transparent;
+}
+
+input[type='range'].himuni-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  margin-top: -9px;
+  border-radius: 50%;
+  background: #F5F1EA;
+  border: 2.5px solid #24232B;
+  box-shadow: 0 2px 6px rgba(36, 35, 43, 0.16);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+input[type='range'].himuni-range:hover::-webkit-slider-thumb {
+  transform: scale(1.08);
+}
+
+input[type='range'].himuni-range::-moz-range-track {
+  height: 6px;
+  border-radius: 2px;
+  background: transparent;
+}
+
+input[type='range'].himuni-range::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #F5F1EA;
+  border: 2.5px solid #24232B;
+  box-shadow: 0 2px 6px rgba(36, 35, 43, 0.16);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

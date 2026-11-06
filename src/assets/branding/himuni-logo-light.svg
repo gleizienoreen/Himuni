@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 236 48" fill="none" role="img" aria-label="HIMUNI brand mark for light backgrounds">
+  <g transform="translate(4, 4)">
+    <path
+      d="M7.5 19.5C7.5 12.5964 13.0964 7 20 7C26.9036 7 32.5 12.5964 32.5 19.5"
+      stroke="#24232B"
+      stroke-width="2.3"
+      stroke-linecap="round"
+    />
+    <path
+      d="M13 19.5C13 15.634 16.134 12.5 20 12.5C23.866 12.5 27 15.634 27 19.5"
+      stroke="#24232B"
+      stroke-width="2"
+      stroke-linecap="round"
+      opacity="0.65"
+    />
+    <line x1="5" y1="24" x2="35" y2="24" stroke="#24232B" stroke-width="2.1" stroke-linecap="round" />
+    <path
+      d="M12.5 28.2C14.35 31.1 16.95 32.6 20 32.6C23.05 32.6 25.65 31.1 27.5 28.2"
+      stroke="#24232B"
+      stroke-width="2"
+      stroke-linecap="round"
+      opacity="0.55"
+    />
+    <circle cx="20" cy="19.5" r="3.2" fill="#8067E8" />
+  </g>
+  <text
+    x="54"
+    y="27"
+    fill="#24232B"
+    font-family="'Space Grotesk', system-ui, sans-serif"
+    font-size="22"
+    font-weight="700"
+    letter-spacing="-0.03em"
+  >
+    HIMUNI
+  </text>
+  <text
+    x="55"
+    y="42"
+    fill="#5A5766"
+    font-family="'Noto Sans Tagalog', sans-serif"
+    font-size="13"
+    letter-spacing="0.08em"
+  >
+    ᜑᜒᜋᜓᜈᜒ
+  </text>
+</svg>
