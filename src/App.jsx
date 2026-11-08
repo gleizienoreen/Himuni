@@ -5,6 +5,7 @@ import { AudioPlayerProvider } from './context/AudioPlayerContext';
 import { DiscoverPage } from './pages/DiscoverPage';
 import { SearchPage } from './pages/SearchPage';
 import { SoundscapePage } from './pages/SoundscapePage';
+import { PostcardsPage } from './pages/PostcardsPage';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/mood-spectrum" element={<DiscoverPage />} />
           <Route path="/soundscapes" element={<DiscoverPage />} />
           <Route path="/soundscapes/:soundscapeId" element={<SoundscapePage />} />
+          <Route path="/postcards" element={<PostcardsPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/about" element={<DiscoverPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />

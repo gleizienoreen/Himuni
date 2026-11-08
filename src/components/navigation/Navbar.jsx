@@ -17,7 +17,10 @@ export function Navbar({ activeMood = null, headerAudioControl = null }) {
   const accentColor = activeMood?.accent || '#8067E8';
 
   const isStandaloneSubpage =
-    location.pathname === '/search' || location.pathname.startsWith('/soundscapes/');
+    location.pathname === '/search' ||
+    location.pathname.startsWith('/soundscapes/') ||
+    location.pathname.startsWith('/postcards') ||
+    location.pathname.startsWith('/collections');
 
   // Synchronize route pathname changes with active state and smooth section scroll
   useEffect(() => {
@@ -29,6 +32,18 @@ export function Navbar({ activeMood = null, headerAudioControl = null }) {
 
     if (location.pathname.startsWith('/soundscapes/')) {
       setActiveNavId('soundscapes');
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return undefined;
+    }
+
+    if (location.pathname.startsWith('/postcards')) {
+      setActiveNavId('postcards');
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return undefined;
+    }
+
+    if (location.pathname.startsWith('/collections')) {
+      setActiveNavId('collections');
       window.scrollTo({ top: 0, behavior: 'auto' });
       return undefined;
     }

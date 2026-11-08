@@ -18,6 +18,13 @@ export const NAV_ITEMS = [
     sectionId: 'soundscapes',
   },
   {
+    id: 'postcards',
+    label: 'Postcards',
+    path: '/postcards',
+    sectionId: 'postcards',
+    standaloneRoute: true,
+  },
+  {
     id: 'search',
     label: 'Search',
     path: '/search',
