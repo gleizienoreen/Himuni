@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   BookOpen,
@@ -21,7 +22,8 @@ export function MemoriesPage({
   activeView = 'timeline', // 'timeline' | 'calendar' | 'history' | 'insights' | 'privacy'
   onViewChange = null,
 }) {
-  const { selectedMood } = useMood();
+  const { selectedMood, energy } = useMood();
+  const location = useLocation();
   const { memories, createMemory, updateMemory, deleteMemory } = useMemories();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,6 +33,33 @@ export function MemoriesPage({
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editingMemory, setEditingMemory] = useState(null);
+
+  // Pre-fill memory modal if track/soundscape passed via navigation state
+  useEffect(() => {
+    if (location.state?.track) {
+      setEditingMemory({
+        title: `${location.state.track.title} — Memory`,
+        moodId: location.state.moodId || selectedMood?.id || 'dreamy',
+        energy: typeof energy === 'number' ? energy : 50,
+        references: {
+          trackId: location.state.track.id,
+          trackSnapshot: location.state.track,
+        },
+      });
+      setModalOpen(true);
+    } else if (location.state?.soundscape) {
+      setEditingMemory({
+        title: `${location.state.soundscape.title} — Memory`,
+        moodId: location.state.soundscape.moodIds?.[0] || selectedMood?.id || 'dreamy',
+        energy: typeof energy === 'number' ? energy : 50,
+        references: {
+          soundscapeId: location.state.soundscape.id,
+          soundscapeSnapshot: location.state.soundscape,
+        },
+      });
+      setModalOpen(true);
+    }
+  }, [location.state, selectedMood, energy]);
 
   // Filtered and sorted memories
   const filteredMemories = useMemo(() => {

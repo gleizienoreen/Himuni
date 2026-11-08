@@ -26,6 +26,21 @@ export function CreateMemoryModal({
   const { postcards } = usePostcards();
   const { collections } = useCollections();
 
+  // Curate saved tracks from collections for instant attachment
+  const collectionTracks = React.useMemo(() => {
+    const list = [];
+    const seen = new Set();
+    collections.forEach((c) => {
+      (c.items || []).forEach((it) => {
+        if (it.type === 'track' && it.snapshot && !seen.has(it.providerId)) {
+          seen.add(it.providerId);
+          list.push({ ...it.snapshot, collectionName: c.name });
+        }
+      });
+    });
+    return list;
+  }, [collections]);
+
   const [title, setTitle] = useState('');
   const [moodId, setMoodId] = useState('dreamy');
   const [energy, setEnergy] = useState(50);
@@ -346,7 +361,7 @@ export function CreateMemoryModal({
                   </div>
                 </div>
 
-                <div className="shrink-0">
+                <div className="shrink-0 flex items-center gap-2">
                   {attachedTrack ? (
                     <button
                       type="button"
@@ -356,14 +371,35 @@ export function CreateMemoryModal({
                       Remove
                     </button>
                   ) : (
-                    <button
-                      type="button"
-                      onClick={() => setTrackPickerOpen(true)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-cream border border-ink/20 hover:border-ink text-xs font-semibold uppercase tracking-wideLabel text-ink transition-colors"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>Select Track</span>
-                    </button>
+                    <>
+                      {collectionTracks.length > 0 && (
+                        <select
+                          onChange={(e) => {
+                            const found = collectionTracks.find((t) => String(t.id) === e.target.value);
+                            if (found) handleTrackSelect(found);
+                          }}
+                          defaultValue=""
+                          aria-label="Select track from your collections"
+                          className="px-2 py-1 text-xs bg-cream border border-ink/20 focus:border-ink focus:outline-none max-w-[140px] truncate"
+                        >
+                          <option value="" disabled>From Collection...</option>
+                          {collectionTracks.map((t) => (
+                            <option key={t.id} value={t.id}>
+                              {t.title}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={() => setTrackPickerOpen(true)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-cream border border-ink/20 hover:border-ink text-xs font-semibold uppercase tracking-wideLabel text-ink transition-colors"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Search Audius</span>
+                      </button>
+                    </>
                   )}
                 </div>
               </div>
