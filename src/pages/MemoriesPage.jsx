@@ -15,6 +15,7 @@ import { useMood } from '../hooks/useMood';
 import { useMemories } from '../hooks/useMemories';
 import { MainLayout } from '../layouts/MainLayout';
 import { MemoryCard } from '../components/memories/MemoryCard';
+import { MoodCalendar } from '../components/memories/MoodCalendar';
 import { CreateMemoryModal } from '../components/memories/CreateMemoryModal';
 
 export function MemoriesPage({
@@ -30,6 +31,7 @@ export function MemoriesPage({
   const [selectedMoodFilter, setSelectedMoodFilter] = useState('all');
   const [sortBy, setSortBy] = useState('newest'); // 'newest' | 'oldest'
   const [selectedDateFilter, setSelectedDateFilter] = useState(null);
+  const [currentTab, setCurrentTab] = useState(activeView || 'timeline');
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editingMemory, setEditingMemory] = useState(null);
@@ -162,11 +164,38 @@ export function MemoriesPage({
             </div>
           </div>
 
+          {/* View switcher tabs: Timeline / Calendar */}
+          <div className="mt-8 flex border-b border-ink/15 text-xs font-semibold uppercase tracking-wideLabel overflow-x-auto">
+            <button
+              type="button"
+              onClick={() => setCurrentTab('timeline')}
+              className={`py-3 px-5 border-b-2 transition-colors whitespace-nowrap ${
+                currentTab === 'timeline'
+                  ? 'border-ink text-ink font-bold bg-cream'
+                  : 'border-transparent text-ink-muted hover:text-ink'
+              }`}
+            >
+              Journal Timeline ({memories.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => setCurrentTab('calendar')}
+              className={`py-3 px-5 border-b-2 transition-colors whitespace-nowrap ${
+                currentTab === 'calendar'
+                  ? 'border-ink text-ink font-bold bg-cream'
+                  : 'border-transparent text-ink-muted hover:text-ink'
+              }`}
+            >
+              Mood Calendar
+            </button>
+          </div>
+
           {/* Section Sub-Navigation Tabs if provided */}
           {extraSections}
 
-          {/* Filter, Search & Sort Controls Bar */}
-          <div className="mt-8 pt-6 border-t border-ink/10 flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
+          {/* Filter, Search & Sort Controls Bar (Shown on Timeline tab) */}
+          {currentTab === 'timeline' && (
+            <div className="mt-8 pt-6 border-t border-ink/10 flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
             {/* Search Input */}
             <div className="relative flex-1 max-w-md">
               <Search
@@ -260,10 +289,25 @@ export function MemoriesPage({
               )}
             </div>
           </div>
+          )}
         </header>
 
-        {/* Timeline Gallery or Empty State */}
-        {memories.length === 0 ? (
+        {/* Content based on Active Tab */}
+        {currentTab === 'calendar' ? (
+          <MoodCalendar
+            memories={memories}
+            selectedDate={selectedDateFilter}
+            onSelectDate={setSelectedDateFilter}
+            onEditMemory={handleOpenEdit}
+            onDeleteMemory={deleteMemory}
+            onCreateMemory={(date) => {
+              setEditingMemory({ entryDate: date });
+              setModalOpen(true);
+            }}
+          />
+        ) : (
+          /* Timeline Gallery or Empty State */
+          memories.length === 0 ? (
           <div className="border border-dashed border-ink/30 p-12 sm:p-16 text-center max-w-2xl mx-auto my-12 bg-cream-soft/40">
             <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center border border-ink/20 bg-cream">
               <BookOpen className="w-8 h-8 text-violet-deep" aria-hidden="true" />
@@ -339,7 +383,7 @@ export function MemoriesPage({
               </AnimatePresence>
             </div>
           </div>
-        )}
+        ))}
       </div>
 
       {/* Modal for Create/Edit */}
