@@ -17,6 +17,7 @@ import { MainLayout } from '../layouts/MainLayout';
 import { MemoryCard } from '../components/memories/MemoryCard';
 import { MoodCalendar } from '../components/memories/MoodCalendar';
 import { ListeningHistorySection } from '../components/memories/ListeningHistorySection';
+import { PersonalInsightsSection } from '../components/memories/PersonalInsightsSection';
 import { CreateMemoryModal } from '../components/memories/CreateMemoryModal';
 
 export function MemoriesPage({
@@ -200,6 +201,17 @@ export function MemoriesPage({
             >
               Listening History
             </button>
+            <button
+              type="button"
+              onClick={() => setCurrentTab('insights')}
+              className={`py-3 px-5 border-b-2 transition-colors whitespace-nowrap ${
+                currentTab === 'insights'
+                  ? 'border-ink text-ink font-bold bg-cream'
+                  : 'border-transparent text-ink-muted hover:text-ink'
+              }`}
+            >
+              Personal Insights
+            </button>
           </div>
 
           {/* Section Sub-Navigation Tabs if provided */}
@@ -332,6 +344,8 @@ export function MemoriesPage({
               setModalOpen(true);
             }}
           />
+        ) : currentTab === 'insights' ? (
+          <PersonalInsightsSection />
         ) : (
           /* Timeline Gallery or Empty State */
           memories.length === 0 ? (
