@@ -1,5 +1,6 @@
 import React from 'react';
-import { ExternalLink, Lock } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ExternalLink, Lock, Sparkles } from 'lucide-react';
 import { formatTrackDuration } from '../../services/audius/audiusNormalizer';
 import { useAudioPlayer } from '../../hooks/useAudioPlayer';
 import { TrackArtwork } from './TrackArtwork';
@@ -174,11 +175,24 @@ export function TrackRow({
         <div
           className={
             isCompact
-              ? 'flex items-center gap-2.5 pl-9 sm:pl-10'
-              : 'flex items-center justify-between sm:justify-end gap-2.5 pl-9 sm:pl-0 shrink-0'
+              ? 'flex items-center gap-2 pl-9 sm:pl-10'
+              : 'flex items-center justify-between sm:justify-end gap-2 pl-9 sm:pl-0 shrink-0'
           }
         >
           {resolvedListenAction}
+
+          <Link
+            to="/postcards/new"
+            state={{ track }}
+            aria-label={`Create Sound Postcard for "${track.title}"`}
+            className="inline-flex min-h-[40px] items-center gap-1 border border-ink/20 bg-cream px-2.5 py-2 text-xs font-medium text-ink hover:border-ink transition-colors"
+            title="Create Sound Postcard with this track"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-ink-muted" aria-hidden="true" />
+            <span className="sr-only sm:not-sr-only text-[11px] uppercase tracking-wideLabel">
+              Postcard
+            </span>
+          </Link>
 
           {track.trackUrl && (
             <a
