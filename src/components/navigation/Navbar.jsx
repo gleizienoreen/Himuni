@@ -112,7 +112,7 @@ export function Navbar({ activeMood = null, headerAudioControl = null }) {
       }
     };
     const onResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 1024) {
         setMobileMenuOpen(false);
       }
     };
@@ -195,7 +195,7 @@ export function Navbar({ activeMood = null, headerAudioControl = null }) {
         {/* Desktop Editorial Navigation */}
         <nav
           aria-label="Primary navigation"
-          className="hidden md:flex items-center gap-5 lg:gap-9"
+          className="hidden lg:flex items-center gap-3.5 xl:gap-7"
         >
           {NAV_ITEMS.map((item) => {
             const isActive = activeNavId === item.id;
@@ -205,7 +205,7 @@ export function Navbar({ activeMood = null, headerAudioControl = null }) {
                 href={item.path}
                 onClick={(e) => handleNavSelect(item, e)}
                 aria-current={isActive ? 'location' : undefined}
-                className={`relative py-2 text-sm font-medium tracking-wide whitespace-nowrap transition-colors ${
+                className={`relative py-2 text-xs xl:text-sm font-medium tracking-wide whitespace-nowrap transition-colors ${
                   isActive
                     ? 'text-ink'
                     : 'text-ink-muted hover:text-ink'
@@ -267,7 +267,7 @@ export function Navbar({ activeMood = null, headerAudioControl = null }) {
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-primary-nav"
             aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            className="md:hidden inline-flex items-center justify-center h-11 w-11 border border-ink/20 bg-cream-soft text-ink hover:border-ink transition-colors"
+            className="lg:hidden inline-flex items-center justify-center h-11 w-11 border border-ink/20 bg-cream-soft text-ink hover:border-ink transition-colors"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -287,7 +287,7 @@ export function Navbar({ activeMood = null, headerAudioControl = null }) {
             animate={{ opacity: 1, y: 0 }}
             exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
-            className="md:hidden border-t border-ink/15 bg-cream px-5 py-6 shadow-sm"
+            className="lg:hidden border-t border-ink/15 bg-cream px-5 py-6 shadow-sm"
           >
             <ul className="divide-y divide-ink/10 border-y border-ink/10">
               {NAV_ITEMS.map((item, idx) => {

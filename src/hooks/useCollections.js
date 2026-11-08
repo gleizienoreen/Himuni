@@ -38,6 +38,7 @@ export function useCollections() {
 
   const getCollection = useCallback(
     (id) => {
+      if (!id) return null;
       return collections.find((c) => c.id === id) || getCollectionById(id);
     },
     [collections]
