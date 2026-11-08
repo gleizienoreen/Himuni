@@ -3,6 +3,7 @@ import {
   addItemToCollection,
   deleteCollection,
   duplicateCollection,
+  getCollectionById,
   loadCollections,
   removeItemFromCollection,
   reorderCollectionItems,
@@ -33,6 +34,32 @@ export function useCollections() {
       return res;
     },
     [refresh]
+  );
+
+  const getCollection = useCallback(
+    (id) => {
+      return collections.find((c) => c.id === id) || getCollectionById(id);
+    },
+    [collections]
+  );
+
+  const createCollection = useCallback(
+    (data) => {
+      return save(data);
+    },
+    [save]
+  );
+
+  const updateCollection = useCallback(
+    (id, updates) => {
+      const existing = getCollectionById(id);
+      if (!existing) return null;
+      return save({
+        ...existing,
+        ...updates,
+      });
+    },
+    [save]
   );
 
   const duplicate = useCallback(
@@ -83,11 +110,17 @@ export function useCollections() {
   return {
     collections,
     refresh,
+    getCollection,
     save,
+    createCollection,
+    updateCollection,
     duplicate,
+    duplicateCollection: duplicate,
     remove,
+    deleteCollection: remove,
     addItem,
     removeItem,
     reorder,
+    reorderItems: reorder,
   };
 }
