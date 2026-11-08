@@ -25,6 +25,13 @@ export const NAV_ITEMS = [
     standaloneRoute: true,
   },
   {
+    id: 'collections',
+    label: 'Collections',
+    path: '/collections',
+    sectionId: 'collections',
+    standaloneRoute: true,
+  },
+  {
     id: 'search',
     label: 'Search',
     path: '/search',
