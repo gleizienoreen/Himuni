@@ -28,6 +28,14 @@ export async function exportPostcardAsPng(postcard, targetElement = null) {
   let root = null;
 
   try {
+    if (typeof document !== 'undefined' && document.fonts?.ready) {
+      try {
+        await document.fonts.ready;
+      } catch {
+        // ignore font ready errors
+      }
+    }
+
     let nodeToCapture = targetElement;
 
     if (!nodeToCapture) {
