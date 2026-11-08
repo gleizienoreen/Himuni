@@ -9,6 +9,7 @@ import { PostcardsPage } from './pages/PostcardsPage';
 import { PostcardEditorPage } from './pages/PostcardEditorPage';
 import { CollectionsPage } from './pages/CollectionsPage';
 import { CollectionDetailPage } from './pages/CollectionDetailPage';
+import { MemoriesPage } from './pages/MemoriesPage';
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
           <Route path="/postcards/edit/:postcardId" element={<PostcardEditorPage />} />
           <Route path="/collections" element={<CollectionsPage />} />
           <Route path="/collections/:collectionId" element={<CollectionDetailPage />} />
+          <Route path="/memories" element={<MemoriesPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/about" element={<DiscoverPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />

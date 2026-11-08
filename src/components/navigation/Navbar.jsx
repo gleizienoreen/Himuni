@@ -20,7 +20,8 @@ export function Navbar({ activeMood = null, headerAudioControl = null }) {
     location.pathname === '/search' ||
     location.pathname.startsWith('/soundscapes/') ||
     location.pathname.startsWith('/postcards') ||
-    location.pathname.startsWith('/collections');
+    location.pathname.startsWith('/collections') ||
+    location.pathname.startsWith('/memories');
 
   // Synchronize route pathname changes with active state and smooth section scroll
   useEffect(() => {
@@ -44,6 +45,12 @@ export function Navbar({ activeMood = null, headerAudioControl = null }) {
 
     if (location.pathname.startsWith('/collections')) {
       setActiveNavId('collections');
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return undefined;
+    }
+
+    if (location.pathname.startsWith('/memories')) {
+      setActiveNavId('memories');
       window.scrollTo({ top: 0, behavior: 'auto' });
       return undefined;
     }

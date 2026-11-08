@@ -32,6 +32,13 @@ export const NAV_ITEMS = [
     standaloneRoute: true,
   },
   {
+    id: 'memories',
+    label: 'Memories',
+    path: '/memories',
+    sectionId: 'memories',
+    standaloneRoute: true,
+  },
+  {
     id: 'search',
     label: 'Search',
     path: '/search',
