@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Compass, Loader2 } from 'lucide-react';
+import { ArrowLeft, BookmarkPlus, Compass, Loader2 } from 'lucide-react';
 import { getMoodById } from '../data/moods';
 import { getSoundscapeById, SOUNDSCAPES } from '../data/soundscapes';
 import { useMood } from '../hooks/useMood';
@@ -15,6 +15,7 @@ import {
 } from '../components/discovery/DiscoveryStateView';
 import { AudiusAttributionNotice } from '../components/discovery/AudiusAttributionNotice';
 import { scrollToSection } from '../utils/navigation';
+import { SaveToCollectionModal } from '../components/collections/SaveToCollectionModal';
 
 export function SoundscapePage({
   renderTrackRowProps = null,
@@ -23,6 +24,7 @@ export function SoundscapePage({
   const { soundscapeId } = useParams();
   const navigate = useNavigate();
   const { selectedMood, selectMood, attuneToSoundscape } = useMood();
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
 
   const soundscape = getSoundscapeById(soundscapeId);
 
@@ -130,6 +132,15 @@ export function SoundscapePage({
                 >
                   <Compass className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>View on Spectrum</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSaveModalOpen(true)}
+                  className="inline-flex min-h-[38px] items-center gap-1.5 border border-ink bg-ink text-cream px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wideLabel hover:bg-violet-deep transition-colors"
+                >
+                  <BookmarkPlus className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>Save to Collection</span>
                 </button>
               </div>
             </div>
@@ -246,6 +257,12 @@ export function SoundscapePage({
             </div>
           </nav>
         </div>
+
+        <SaveToCollectionModal
+          isOpen={saveModalOpen}
+          onClose={() => setSaveModalOpen(false)}
+          soundscape={soundscape}
+        />
       </article>
     </MainLayout>
   );

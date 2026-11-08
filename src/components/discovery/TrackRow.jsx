@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ExternalLink, Lock, Sparkles } from 'lucide-react';
+import { BookmarkPlus, ExternalLink, Lock, Sparkles } from 'lucide-react';
 import { formatTrackDuration } from '../../services/audius/audiusNormalizer';
 import { useAudioPlayer } from '../../hooks/useAudioPlayer';
 import { TrackArtwork } from './TrackArtwork';
@@ -8,6 +8,7 @@ import {
   InlineContextualPlayer,
   TrackListenButton,
 } from './ContextualListenControls';
+import { SaveToCollectionModal } from '../collections/SaveToCollectionModal';
 
 /**
  * Editorial track-list item presenting real Audius metadata, creator attribution,
@@ -23,6 +24,7 @@ export function TrackRow({
   isActiveTrack = undefined,
 }) {
   const { currentTrack, status } = useAudioPlayer();
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
 
   if (!track) return null;
 
@@ -181,6 +183,19 @@ export function TrackRow({
         >
           {resolvedListenAction}
 
+          <button
+            type="button"
+            onClick={() => setSaveModalOpen(true)}
+            aria-label={`Save "${track.title}" to collection`}
+            className="inline-flex min-h-[40px] items-center gap-1 border border-ink/20 bg-cream px-2.5 py-2 text-xs font-medium text-ink hover:border-ink transition-colors"
+            title="Save to Collection"
+          >
+            <BookmarkPlus className="w-3.5 h-3.5 text-ink-muted" aria-hidden="true" />
+            <span className="sr-only sm:not-sr-only text-[11px] uppercase tracking-wideLabel">
+              Save
+            </span>
+          </button>
+
           <Link
             to="/postcards/new"
             state={{ track }}
@@ -210,6 +225,12 @@ export function TrackRow({
       </div>
 
       {resolvedInlinePlayer}
+
+      <SaveToCollectionModal
+        isOpen={saveModalOpen}
+        onClose={() => setSaveModalOpen(false)}
+        track={track}
+      />
     </article>
   );
 }

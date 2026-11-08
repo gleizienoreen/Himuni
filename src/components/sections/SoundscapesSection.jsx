@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Compass, Disc3 } from 'lucide-react';
+import { ArrowRight, BookmarkPlus, Compass, Disc3 } from 'lucide-react';
 import { SOUNDSCAPES } from '../../data/soundscapes';
 import { useSoundscapePreviews } from '../../hooks/useSoundscapeCollection';
 import { SoundscapeArtwork } from '../common/SoundscapeArtwork';
 import { EditorialReveal } from '../common/EditorialReveal';
 import { scrollToSection } from '../../utils/navigation';
+import { SaveToCollectionModal } from '../collections/SaveToCollectionModal';
 
 export function SoundscapesSection({
   activeMoodId = null,
@@ -13,6 +14,7 @@ export function SoundscapesSection({
 }) {
   const sectionRef = useRef(null);
   const [shouldLoadPreviews, setShouldLoadPreviews] = useState(false);
+  const [savingSoundscape, setSavingSoundscape] = useState(null);
 
   useEffect(() => {
     if (typeof IntersectionObserver === 'undefined') {
@@ -166,13 +168,26 @@ export function SoundscapesSection({
 
                 {/* Action Footer */}
                 <div className="px-6 pb-6 sm:px-7 sm:pb-7 pt-3 flex flex-wrap items-center justify-between gap-3 border-t border-ink/10 mt-2">
-                  <Link
-                    to={`/soundscapes/${item.id}`}
-                    className="inline-flex min-h-[40px] items-center gap-2 bg-ink text-cream px-4 py-2.5 text-xs font-semibold uppercase tracking-wideLabel hover:bg-ink-soft transition-colors"
-                  >
-                    <span>Open Soundscape</span>
-                    <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
-                  </Link>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      to={`/soundscapes/${item.id}`}
+                      className="inline-flex min-h-[40px] items-center gap-2 bg-ink text-cream px-4 py-2.5 text-xs font-semibold uppercase tracking-wideLabel hover:bg-ink-soft transition-colors"
+                    >
+                      <span>Open Soundscape</span>
+                      <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={() => setSavingSoundscape(item)}
+                      aria-label={`Save "${item.title}" to collection`}
+                      className="inline-flex min-h-[40px] items-center gap-1.5 border border-ink/25 bg-cream px-3 py-2 text-xs font-semibold uppercase tracking-wideLabel text-ink hover:border-ink transition-colors"
+                      title="Save to Collection"
+                    >
+                      <BookmarkPlus className="w-3.5 h-3.5 text-ink-muted" aria-hidden="true" />
+                      <span className="sr-only sm:not-sr-only">Save</span>
+                    </button>
+                  </div>
 
                   {onAttuneSoundscape && (
                     <button
@@ -193,6 +208,12 @@ export function SoundscapesSection({
           })}
         </div>
       </div>
+
+      <SaveToCollectionModal
+        isOpen={Boolean(savingSoundscape)}
+        onClose={() => setSavingSoundscape(null)}
+        soundscape={savingSoundscape}
+      />
     </section>
   );
 }
