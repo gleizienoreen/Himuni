@@ -107,21 +107,25 @@ export const POSTCARD_LAYOUTS = [
     id: 'editorial',
     name: 'Editorial',
     description: 'Large heading, asymmetric track anchor, and prominent brand resonance.',
+    tag: 'Asymmetric',
   },
   {
     id: 'minimal',
     name: 'Minimal',
     description: 'Pure typography, generous white space, and restrained architectural lines.',
+    tag: 'Spacious',
   },
   {
     id: 'abstract',
     name: 'Abstract',
     description: 'Prominent decorative geometric shapes and expressive layout flow.',
+    tag: 'Graphic',
   },
   {
     id: 'memory',
     name: 'Memory',
     description: 'Prominent personal note quotation, date stamp, and reflection framing.',
+    tag: 'Keepsake',
   },
 ];
 
