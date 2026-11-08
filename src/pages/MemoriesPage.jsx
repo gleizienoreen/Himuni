@@ -18,6 +18,7 @@ import { MemoryCard } from '../components/memories/MemoryCard';
 import { MoodCalendar } from '../components/memories/MoodCalendar';
 import { ListeningHistorySection } from '../components/memories/ListeningHistorySection';
 import { PersonalInsightsSection } from '../components/memories/PersonalInsightsSection';
+import { PrivacyControlsSection } from '../components/memories/PrivacyControlsSection';
 import { CreateMemoryModal } from '../components/memories/CreateMemoryModal';
 
 export function MemoriesPage({
@@ -212,6 +213,17 @@ export function MemoriesPage({
             >
               Personal Insights
             </button>
+            <button
+              type="button"
+              onClick={() => setCurrentTab('privacy')}
+              className={`py-3 px-5 border-b-2 transition-colors whitespace-nowrap ${
+                currentTab === 'privacy'
+                  ? 'border-ink text-ink font-bold bg-cream'
+                  : 'border-transparent text-ink-muted hover:text-ink'
+              }`}
+            >
+              Privacy &amp; Data
+            </button>
           </div>
 
           {/* Section Sub-Navigation Tabs if provided */}
@@ -346,6 +358,8 @@ export function MemoriesPage({
           />
         ) : currentTab === 'insights' ? (
           <PersonalInsightsSection />
+        ) : currentTab === 'privacy' ? (
+          <PrivacyControlsSection />
         ) : (
           /* Timeline Gallery or Empty State */
           memories.length === 0 ? (
