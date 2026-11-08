@@ -7,6 +7,8 @@ import React, {
   useState,
 } from 'react';
 import { getTrackStreamUrl } from '../services/audius/audiusApi';
+import { recordPlaybackEvent } from '../services/history/listeningHistoryStorage';
+import { loadPreferences } from '../utils/storage';
 
 export const AudioPlayerContext = createContext(null);
 
@@ -173,6 +175,12 @@ export function AudioPlayerProvider({ children }) {
       await audio.play();
       if (playRequestIdRef.current === requestId) {
         setStatus('playing');
+        try {
+          const moodPrefs = loadPreferences();
+          recordPlaybackEvent(track, moodPrefs);
+        } catch {
+          // Non-blocking history record
+        }
       }
     } catch (err) {
       // Ignore superseded play attempts or AbortError caused by switching tracks

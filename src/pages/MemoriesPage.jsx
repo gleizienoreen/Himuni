@@ -16,6 +16,7 @@ import { useMemories } from '../hooks/useMemories';
 import { MainLayout } from '../layouts/MainLayout';
 import { MemoryCard } from '../components/memories/MemoryCard';
 import { MoodCalendar } from '../components/memories/MoodCalendar';
+import { ListeningHistorySection } from '../components/memories/ListeningHistorySection';
 import { CreateMemoryModal } from '../components/memories/CreateMemoryModal';
 
 export function MemoriesPage({
@@ -188,6 +189,17 @@ export function MemoriesPage({
             >
               Mood Calendar
             </button>
+            <button
+              type="button"
+              onClick={() => setCurrentTab('history')}
+              className={`py-3 px-5 border-b-2 transition-colors whitespace-nowrap ${
+                currentTab === 'history'
+                  ? 'border-ink text-ink font-bold bg-cream'
+                  : 'border-transparent text-ink-muted hover:text-ink'
+              }`}
+            >
+              Listening History
+            </button>
           </div>
 
           {/* Section Sub-Navigation Tabs if provided */}
@@ -302,6 +314,21 @@ export function MemoriesPage({
             onDeleteMemory={deleteMemory}
             onCreateMemory={(date) => {
               setEditingMemory({ entryDate: date });
+              setModalOpen(true);
+            }}
+          />
+        ) : currentTab === 'history' ? (
+          <ListeningHistorySection
+            onCreateMemoryWithTrack={(track) => {
+              setEditingMemory({
+                title: `${track.title} — Memory`,
+                moodId: selectedMood?.id || 'dreamy',
+                energy: typeof energy === 'number' ? energy : 50,
+                references: {
+                  trackId: track.id,
+                  trackSnapshot: track,
+                },
+              });
               setModalOpen(true);
             }}
           />
